@@ -8,8 +8,8 @@
             "server": "localhost",
             "port": 3306,
             "driver": "MySQL",
-            "name": "fleuriste",
             "database": "fleuriste",
+            "name": "toto",
             "username": "root",
             "password": ""
         }

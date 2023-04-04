@@ -1,6 +1,5 @@
 // Fichier mécanique de nos routes avec les fonctions de traitement
 // import des modules necessaires (express, le modèle, bcrypt)
-
 const bcrypt = require('bcrypt')
 const User = require('../models/user')
 const { RequestError, UserError } = require('../error/customError')
@@ -10,7 +9,7 @@ const { RequestError, UserError } = require('../error/customError')
 
 exports.getAllUsers = (req, res, next) => {
     User.findAll()
-        .then(users => res.json(users))
+        .then(users => res.json({ data: users }))
         .catch(err => next(err))
 }
 
@@ -58,7 +57,7 @@ exports.addUser = async (req, res, next) => {
         req.body.password = hash
 
         // Céation de l'utilisateur
-        let User = await User.create(req.body)
+        user = await User.create(req.body)
 
         // Réponse du user créé
         return res.json({ message: 'User Created', data: user })

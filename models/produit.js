@@ -3,8 +3,9 @@
 const { DataTypes} = require('sequelize')
 const DB = require('../db.config')
 
-/****DEFINITION DU MODELE PLANTE */
-const Plante = DB.define('Plante', {
+/****DEFINITION DU MODELE Produit */
+
+    const Produit = DB.define('Produit', {
     id: {
         type: DataTypes.INTEGER(11),
         primaryKey: true,
@@ -24,16 +25,11 @@ const Plante = DB.define('Plante', {
         defaultValue: '',
         allowNull: false,
     },
-    recette: {
-        type: DataTypes.TEXT,
+    prix: {
+        type: DataTypes.NUMBER,
         defaultValue: '',
         allowNull: false,
     },
 }, { paranoid:true }) //ici pour faire du softDelete
 
-/***SYNCHRONISATION Du MODELE plante */
- //Plante.sync()
-// Plante.sync({force: true})
-// Plante.sync({alter: true})
-
-module.exports = Plante
+module.exports = Produit

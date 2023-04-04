@@ -1,84 +1,84 @@
 // import des modules necessaires (express, le modèle, bcrypt)
 
-const Plante = require('../models/plante')
-const { RequestError, PlanteError } = require('../error/customError')
+const Produit = require('../models/produit')
+const { RequestError, ProduitError } = require('../error/customError')
 
-//Routage de la ressource Plante
+//Routage de la ressource Produit
 
-exports.getAllPlantes = (req, res, next) =>{
-    Plante.findAll()
-        .then( plantes => res.json({ date: plantes}))
+exports.getAllProduits = (req, res, next) =>{
+    Produit.findAll()
+        .then( produits => res.json({ data: produits}))
         .catch(err => next(err))
 }
 
-exports.getPlante = async (req, res, next) =>{
+exports.getProduit = async (req, res, next) =>{
     try {
-        let planteId = parseInt(req.params.id)
+        let produitId = parseInt(req.params.id)
 
         // Vérif si le champs id est présent et cohérent
-        if(!planteId){
+        if(!produitId){
             //return res.json(400).json({ message: 'Missing Parameter'})
             throw new RequestError('Missing parameter')
         }
 
         //Récupération du produit
-        let plante = await Plante.findOne({ where: {id: planteId}, raw: true})
+        let produit = await Produit.findOne({ where: {id: produitId}, raw: true})
     
         //test si résultat
-        if(plante === null){
-            throw new PlanteError(`This product doesn't exist !`, 0)
+        if(produit === null){
+            throw new ProduitError(`This product doesn't exist !`, 0)
             }
         
         //Renvoi du Produit trouvé
-        return res.json({data: plante})
+        return res.json({data: produit})
     } catch (err){
         next(err)
     }
 }
 
 // Ajouter 1 produit
-exports.addPlante = async (req, res, next) => {
+exports.addProduit = async (req, res, next) => {
       try{
-        const {user_id, nom, description, recette} = req.body
+        const {nom, description, prix} = req.body
 
         //validation des données reçues
-        if(!user_id || !nom || !description || !recette){
+        if(!nom || !description || !prix){
             throw new RequestError(`Missing parameter`)
         }
         // Vérif si le produit existe
-        let plante = await Plante.findOne({ where: {nom: nom}, raw: true})
-        if( plante !== null){
-            throw new RequestError( `This product ${nom} already exists !`)//TODO internationalizer +vite
+        let produit = await Produit.findOne({ where: {nom: nom}, raw: true})
+        if( produit !== null){
+            throw new ProduitError( `This product ${nom} already exists !`)//TODO internationalizer +vite
     }
 
         // Création du produit
-        plante = await Plante.create(req.body)
+        produit = await Produit.create(req.body)
 
         // Réponse du produit créé
-        return res.json({ message: 'product created', data:plante})
+        return res.json({ message: 'product created', data:produit})
     } catch(err){
         next(err)
     }
 }
 
-exports.updatePlante = async (req, res, next) =>{
+exports.updateProduit = async (req, res, next) =>{
     try{
-        let planteId = parseInt(req.params.id)
+        let produitId = parseInt(req.params.id)
 
         //Vérification si le champs id est présent et cohérent
-        if (!planteId) {
+        if (!produitId) {
             throw new RequestError(`Missing parameter`)
         }
             //Recherche du produit
-            let plante = await Plante.findOne({ where: {id: planteId}, raw: true})
+            let produit = await Produit.findOne({ where: {id: produitId}, raw: true})
             
             //Vérifier si le produit existe
-            if(plante === null){
-                throw new PlanteError( 'This product doesnot exist !', 0)
+            if(produit === null){
+                throw new ProduitError( 'This product doesnot exist !', 0)
             }
 
             //Mise à jour du produit
-            await Plante.update(req.body, { where: {id: planteId}})
+            await Produit.update(req.body, { where: {id: produitId}})
 
             // Réponse de la mise à jour
             return res.json({ message: 'product updated'})
@@ -87,16 +87,16 @@ exports.updatePlante = async (req, res, next) =>{
             }
 } //on modifie / on update
 
-exports.untrashPlante = async(req, res, next) =>{
+exports.untrashProduit = async(req, res, next) =>{
     try {
-        let planteId = parseInt(req.params.id)
+        let produitId = parseInt(req.params.id)
 
         //Vérification si le champs id est présent et cohérent
-        if(!planteId){
+        if(!produitId){
             throw new RequestError('Missing parameter')
         }
 
-        await Plante.restore({ where: {id: planteId}})
+        await Produit.restore({ where: {id: produitId}})
 
         // Réponse de sortie de poubelle
             return res.status(204).json({})
@@ -105,17 +105,17 @@ exports.untrashPlante = async(req, res, next) =>{
         }
 }//pr le untrash car put et patch pas le meilleur choix
 
-exports.trashPlante = async(req, res, next) => {
+exports.trashProduit = async(req, res, next) => {
     
     try{
-        let planteId = parseInt(req.params.id)
+        let produitId = parseInt(req.params.id)
         //Vérification si le champs id est présent et cohérent
-        if(!planteId){
+        if(!produitId){
             throw new RequestError('Missing parameter')
         }
 
         //Suppression de l'utilisateur (soft delete - ya pas force:true)
-        await Plante.destroy({ where: {id:planteId}})
+        await Produit.destroy({ where: {id:produitId}})
 
         // Réponse de la mise en poubelle
         return res.status(204).json({})
@@ -123,18 +123,18 @@ exports.trashPlante = async(req, res, next) => {
         next(err)
         }
 }
-exports.deletePlante = async(req, res, next) => {
+exports.deleteProduit = async(req, res, next) => {
 
     try{
-    let planteId = parseInt(req.params.id)
+    let produitId = parseInt(req.params.id)
 
     //Vérification si le champs id est présent et cohérent
-    if(!planteId) {
+    if(!produitId) {
         throw new RequestError('Missing parameter')
     }
 
     //Suppression de l'utilisateur (hard delete)
-    await Plante.destroy({ where: {id:planteId}, force: true})
+    await Produit.destroy({ where: {id:produitId}, force: true})
 
     // Réponse de la suppression
     return res.status(204).json({})

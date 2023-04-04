@@ -23,7 +23,7 @@ class MainError extends Error{
                     this.statusCode = 409
                 }
                 break
-            case 'PlanteError':
+            case 'ProduitError':
                 if(errorType == 0){
                     this.statusCode = 404
                 }else{
@@ -42,7 +42,7 @@ class MainError extends Error{
 
 class AuthenticationError extends MainError{}
 class UserError extends MainError{}
-class PlanteError extends MainError{}
+class ProduitError extends MainError{}
 class RequestError extends MainError{}
 
-module.exports = { MainError, AuthenticationError, UserError, PlanteError, RequestError}
+module.exports = { MainError, AuthenticationError, UserError, ProduitError, RequestError}
