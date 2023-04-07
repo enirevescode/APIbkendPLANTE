@@ -27,7 +27,7 @@ const produit_router = require('./routes/produits')
 const auth_router = require('./routes/auth')
 
 /*****MISE EN PLACE DU ROUTAGE */
-app.get('/', (req, res) => res.send(`I'm online. TUTTI IS OKAY !`))
+app.get('/', (req, res) => res.send(`I'm online. TUTTI IS OKAY !`))//route/défaut idem L37
 
 app.use('/users', user_router)
 app.use('/produits', produit_router)
