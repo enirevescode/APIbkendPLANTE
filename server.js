@@ -10,7 +10,7 @@ let DB = require('./db.config')
 /******INITIALISATION Du serveur*/
 const app = express()
 
-/* Les middleware */
+/* Les middlewares */
 app.use(cors({
     origin: "*",
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
