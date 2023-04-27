@@ -14,7 +14,7 @@ const errorHandler = (err, req, res, next) => {
             if(err.name == 'SequelizeDatabaseError'){
                 message = {message: 'Database Error'}
             }
-            break
+            break;
         case 1:
             message = {message: err.message}
             break;
